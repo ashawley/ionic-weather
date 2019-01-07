@@ -9,3 +9,20 @@
 @import '~@ionic/angular/css/text-alignment.css';
 @import '~@ionic/angular/css/text-transformation.css';
 @import '~@ionic/angular/css/flex-utils.css';
+
+.primary-value {
+  font-size: 36px;
+}
+
+.secondary-value {
+  font-size: 24px;
+}
+
+.item-ios,
+.item-md {
+  padding-left: 0;
+}
+
+.item-inner {
+  padding: 12px;
+}
