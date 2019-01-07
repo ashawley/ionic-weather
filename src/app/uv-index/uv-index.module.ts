@@ -1,6 +1,6 @@
 import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
-import { NgModule } from '@angular/core';
+import { CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UVIndexPage } from './uv-index.page';
@@ -12,6 +12,7 @@ import { UVIndexPage } from './uv-index.page';
     FormsModule,
     RouterModule.forChild([{ path: '', component: UVIndexPage }])
   ],
-  declarations: [UVIndexPage]
+  declarations: [UVIndexPage],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class UVIndexPageModule {}
