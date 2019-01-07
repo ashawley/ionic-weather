@@ -13,5 +13,11 @@ export class WeatherService {
   private latitude = 38.969730;
   private longitude = -77.383873;
 
+  current(): Observable<any> {
+    return this.http.get(
+      `${this.baseUrl}/weather?lat=${this.latitude}&lon=${
+        this.longitude
+      }&appid=${this.appId}`);
+  }
 
 }
