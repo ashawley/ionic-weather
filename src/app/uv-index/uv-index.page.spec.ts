@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UVIndexPage } from './tab3.page';
+import { UVIndexPage } from './uv-index.page';
 
 describe('UVIndexPageModule', () => {
   let component: UVIndexPage;

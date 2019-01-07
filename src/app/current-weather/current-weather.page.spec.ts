@@ -1,7 +1,7 @@
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CurrentWeatherPage } from './tab1.page';
+import { CurrentWeatherPage } from './current-weather.page';
 
 describe('CurrentWeatherPage', () => {
   let component: CurrentWeatherPage;

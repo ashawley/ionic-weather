@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-tab2',
-  templateUrl: 'tab2.page.html',
-  styleUrls: ['tab2.page.scss']
+  selector: 'app-forecast',
+  templateUrl: 'forecast.page.html',
+  styleUrls: ['forecast.page.scss']
 })
 export class ForecastPage {}
