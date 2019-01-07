@@ -6,4 +6,13 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content></ion-content>
+<ion-content text-center padding>
+  <kws-uv-index class="primary-value"
+    [uvIndex]="uvIndex?.value"
+  ></kws-uv-index>
+  <div class="description">
+    {{ 
+      advice[(uvIndex?.riskLevel)] 
+    }}
+  </div>
+</ion-content>
