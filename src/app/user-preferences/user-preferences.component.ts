@@ -14,6 +14,8 @@ export class UserPreferencesComponent implements OnInit {
   ngOnInit() {
   }
 
-  dismiss() {}
+  dismiss() {
+    this.modal.dismiss();
+  }
 
 }
