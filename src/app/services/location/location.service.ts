@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { Platform } from '@ionic/angular'
 
 import { Coordinate } from '../../models/coordinate';
 
@@ -7,7 +8,10 @@ import { Coordinate } from '../../models/coordinate';
   providedIn: 'root'
 })
 export class LocationService {
-  constructor(private geolocation: Geolocation) { }
+  constructor(
+    private geolocation: Geolocation,
+    private platform: Platform
+  ) {}
 
   private defaultPosition = {
     coords: {

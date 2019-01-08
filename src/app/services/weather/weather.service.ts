@@ -2,46 +2,78 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { Observable } from 'rxjs';
+import { from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { flatMap } from 'rxjs/operators';
+
+import { LocationService } from '../../services/location/location.service';
 
 import { Forecast } from '../../models/forecast';
 import { Weather } from '../../models/weather';
-import { UVIndex } from '../..//models/uv-index';
+import { UVIndex } from '../../models/uv-index';
+import { Coordinate } from '../../models/coordinate';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WeatherService {
-  constructor(private http: HttpClient) {}
+  constructor(
+    private http: HttpClient,
+    private location: LocationService
+  ) {}
 
   private appId = 'a895e31039049c15d405c5c541128194'; // or use your own API key
   private baseUrl = 'https://api.openweathermap.org/data/2.5';
 
-  private latitude = 38.969730;
-  private longitude = -77.383873;
+  private getCurrentLocation(): Observable<Coordinate> {
+    return from(this.location.current());
+  }
 
   current(): Observable<Weather> {
+    return this.getCurrentLocation().pipe(
+      flatMap((coord: Coordinate) =>
+        this.getCurrentWeather(coord)
+      )
+    );
+  }
+
+  private getCurrentWeather(coord: Coordinate): Observable<Weather> {
     return this.http.get(
-      `${this.baseUrl}/weather?lat=${this.latitude}&lon=${
-        this.longitude
-      }&appid=${this.appId}`
-      ).pipe(map(res => this.unpackWeather(res)));
+        `${this.baseUrl}/weather?lat=${coord.latitude}&lon=${
+          coord.longitude
+        }&appid=${this.appId}`
+      )
+      .pipe(map(res => this.unpackWeather(res)));
   }
 
   forecast(): Observable<Forecast> {
+    return this.getCurrentLocation().pipe(
+      flatMap(coord => this.getCurrentForecast(coord))
+    );
+  }
+
+  private getCurrentForecast(coord: Coordinate): Observable<Forecast> {
     return this.http.get(
-      `${this.baseUrl}/forecast?lat=${this.latitude}&lon=${
-        this.longitude
-      }&appid=${this.appId}`
-      ).pipe(map(res => this.unpackForecast(res)));
+        `${this.baseUrl}/forecast?lat=${coord.latitude}&lon=${
+          coord.longitude
+        }&appid=${this.appId}`
+      )
+      .pipe(map((res: any) => this.unpackForecast(res)));
   }
 
   uvIndex(): Observable<UVIndex> {
+    return this.getCurrentLocation().pipe(
+      flatMap(coord => this.getCurrentUvIndex(coord))
+    );
+  }
+
+  private getCurrentUvIndex(coord: Coordinate): Observable<UVIndex> {
     return this.http.get(
-      `${this.baseUrl}/uvi?lat=${this.latitude}&lon=${
-        this.longitude
-      }&appid=${this.appId}`
-      ).pipe(map(res => this.unpackUvIndex(res)));
+        `${this.baseUrl}/uvi?lat=${coord.latitude}&lon=${
+          coord.longitude
+        }&appid=${this.appId}`
+      )
+      .pipe(map((res: any) => this.unpackUvIndex(res)));
   }
 
   private unpackWeather(res: any): Weather {
@@ -70,24 +102,18 @@ export class WeatherService {
     return forecast;
   }
 
-
   private unpackUvIndex(res: any): UVIndex {
-    let riskValue: number = res.value;
-    let calculatedLevel: number;  
-    if (riskValue < 3) {
-      calculatedLevel = 0;
-    } else if (3 <= riskValue && riskValue < 6) {
-      calculatedLevel = 1;
-    } else if (6 <= riskValue && riskValue < 8) {
-      calculatedLevel = 2;
-    } else if (8 <= riskValue && riskValue < 11) {
-      calculatedLevel = 3;
-    } else if (riskValue >= 11) {
-      calculatedLevel = 4;
-    }
     return {
-      value: riskValue,
-      riskLevel: calculatedLevel
+      value: res.value,
+      riskLevel: this.riskLevel(res.value)
     };
+  }
+
+  private riskLevel(value: number): number {
+    if (value < 3)                    return 0;
+    if (3 <= value && value < 6)      return 1;
+    if (6 <= value && value < 8)      return 2;
+    if (8 <= value && value < 11)     return 3;
+    /* if (value >= 11) */            return 4;
   }
 }
