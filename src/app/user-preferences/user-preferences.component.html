@@ -10,6 +10,21 @@
 </ion-header>
 
 <ion-content>
+  <ion-list>
+    <ion-item>
+      <ion-label>Use Celsius</ion-label>
+      <ion-toggle [(ngModel)]="useCelsius"></ion-toggle>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Location</ion-label>
+      <ion-select [(ngModel)]="city">
+        <ion-select-option *ngFor="let city of cities" [value]="city">{{
+	  city.name
+	}}</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </ion-list>
 </ion-content>
 
 <ion-footer>

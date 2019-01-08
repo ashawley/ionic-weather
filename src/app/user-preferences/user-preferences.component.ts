@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 
 import { ModalController } from '@ionic/angular';
 
+import { City } from '../models/city';
+import { cities } from './cities';
+
 @Component({
   selector: 'app-user-preferences',
   templateUrl: './user-preferences.component.html',
@@ -11,6 +14,10 @@ export class UserPreferencesComponent implements OnInit {
 
   constructor(private modal: ModalController) {}
 
+  cities: Array<City> = cities;
+  city: City = cities[0];
+  useCelsius: boolean;
+
   ngOnInit() {
   }
 
@@ -18,6 +25,9 @@ export class UserPreferencesComponent implements OnInit {
     this.modal.dismiss();
   }
 
-  save() {}
+  save() {
+    console.log(`save("${this.city.name}", ${this.useCelsius})`);
+    this.modal.dismiss();
+  }
 
 }
