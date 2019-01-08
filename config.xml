@@ -87,4 +87,7 @@
     <plugin name="cordova-plugin-geolocation" spec="4.0.1">
         <variable name="GEOLOCATION_USAGE_DESCRIPTION" value="To determine the location for which to get weather data" />
     </plugin>
+    <config-file parent="NSLocationWhenInUseUsageDescription" platform="ios" target="*-Info.plist">
+      <string>To determine the location for which to get weather data</string>
+    </config-file>
 </widget>
