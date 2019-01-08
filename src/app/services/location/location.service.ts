@@ -19,11 +19,15 @@ export class LocationService {
       longitude: -77.383873
     }
   };
+  private cachedLocation;
 
   async current(): Promise<Coordinate> {
-    const loc = this.platform.is('cordova')
-      ? await this.geolocation.getCurrentPosition()
-      : this.defaultPosition;
+    const loc =
+      this.cachedLocation
+        || (this.platform.is('cordova')
+           ? await this.geolocation.getCurrentPosition()
+           : this.defaultPosition);
+    this.cachedLocation = loc;
     return {
       longitude: loc.coords.longitude,
       latitude: loc.coords.latitude
