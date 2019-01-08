@@ -18,4 +18,6 @@ export class UserPreferencesComponent implements OnInit {
     this.modal.dismiss();
   }
 
+  save() {}
+
 }
