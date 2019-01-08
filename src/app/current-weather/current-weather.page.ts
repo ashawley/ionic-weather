@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { LoadingController } from '@ionic/angular';
+
 import { WeatherService } from '../services/weather/weather.service';
 import { IconMapService } from '../services/icon-map/icon-map.service';
 import { Weather } from '../models/weather';
@@ -13,11 +15,21 @@ export class CurrentWeatherPage {
   currentWeather: Weather;
 
   constructor(
+    public loading: LoadingController,
     public iconMap: IconMapService,
     private weather: WeatherService
   ) {}
 
-  ionViewDidEnter() {
-    this.weather.current().subscribe(w => (this.currentWeather = w));
+  async ionViewDidEnter() {
+    const l = await this.loading.create({
+      duration: 2000,
+      message: 'Please wait...',
+      translucent: true
+    });
+    l.present();
+    this.weather.current().subscribe(w => {
+      this.currentWeather = w;
+      l.dismiss();
+    });
   }
 }

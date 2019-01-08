@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 
+import { LoadingController } from '@ionic/angular';
+
 import { WeatherService } from '../services/weather/weather.service';
 import { UVIndex } from '../models/uv-index';
 
@@ -28,9 +30,22 @@ export class UVIndexPage {
       'and after swimming or sweating. Bright surfaces, such as sand, water and snow, will increase UV exposure.'
   ];
 
-  constructor(private weather: WeatherService) {}
+  constructor(
+    public loading: LoadingController,
+    private weather: WeatherService
+  ) {}
 
-  ionViewDidEnter() {
-    this.weather.uvIndex().subscribe(i => (this.uvIndex = i));
+  async ionViewDidEnter() {
+    const l = await this.loading.create({
+      duration: 2000,
+      message: 'Please wait...',
+      translucent: true,
+      cssClass: 'custom-class custom-loading'
+    });
+    l.present();
+    this.weather.uvIndex().subscribe(i => {
+      this.uvIndex = i;
+      l.dismiss();
+    });
   }
 }
