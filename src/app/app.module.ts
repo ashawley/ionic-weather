@@ -10,9 +10,10 @@ import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, UserPreferencesComponent],
   entryComponents: [],
   imports: [
     BrowserModule,
