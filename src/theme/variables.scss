@@ -2,6 +2,10 @@
 // http://ionicframework.com/docs/theming/
 
 /** Ionic CSS Variables **/
+:host {
+  --ion-background-color: white;
+}
+
 :root {
   /** background **/
   --ion-background-color: #b9dbf7;
