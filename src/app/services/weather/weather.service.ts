@@ -14,7 +14,7 @@ import { UVIndex } from '../..//models/uv-index';
 export class WeatherService {
   constructor(private http: HttpClient) {}
 
-  private appId = '69f068bb8bf2bc3e061cb2b62c255c65'; // or use your own API key
+  private appId = 'a895e31039049c15d405c5c541128194'; // or use your own API key
   private baseUrl = 'https://api.openweathermap.org/data/2.5';
 
   private latitude = 38.969730;
