@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 
 import { LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 import { WeatherService } from '../services/weather/weather.service';
 import { IconMapService } from '../services/icon-map/icon-map.service';
 import { Weather } from '../models/weather';
+import { UserPreferencesComponent } from '../user-preferences/user-preferences.component';
 
 @Component({
   selector: 'app-current-weather',
@@ -15,10 +17,16 @@ export class CurrentWeatherPage {
   currentWeather: Weather;
 
   constructor(
+    private modal: ModalController,
     public loading: LoadingController,
     public iconMap: IconMapService,
     private weather: WeatherService
   ) {}
+
+  async openUserPreferences(): Promise<void> {
+    const m = await this.modal.create({ component: UserPreferencesComponent });
+    await m.present();
+  }
 
   async ionViewDidEnter() {
     const l = await this.loading.create({

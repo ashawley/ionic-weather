@@ -14,7 +14,7 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
 
 @NgModule({
   declarations: [AppComponent, UserPreferencesComponent],
-  entryComponents: [],
+  entryComponents: [UserPreferencesComponent],
   imports: [
     BrowserModule,
     HttpClientModule,

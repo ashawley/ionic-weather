@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ModalController } from '@ionic/angular';
+
 @Component({
   selector: 'app-user-preferences',
   templateUrl: './user-preferences.component.html',
@@ -7,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class UserPreferencesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private modal: ModalController) {}
 
   ngOnInit() {
   }

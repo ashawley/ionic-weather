@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 
 import { LoadingController } from '@ionic/angular';
+import { ModalController } from '@ionic/angular';
 
 import { WeatherService } from '../services/weather/weather.service';
 import { UVIndex } from '../models/uv-index';
+import { UserPreferencesComponent } from '../user-preferences/user-preferences.component';
 
 @Component({
   selector: 'app-uv-index',
@@ -31,9 +33,15 @@ export class UVIndexPage {
   ];
 
   constructor(
+    private modal: ModalController,
     public loading: LoadingController,
     private weather: WeatherService
   ) {}
+
+  async openUserPreferences(): Promise<void> {
+    const m = await this.modal.create({ component: UserPreferencesComponent });
+    await m.present();
+  }
 
   async ionViewDidEnter() {
     const l = await this.loading.create({
