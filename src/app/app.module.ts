@@ -10,6 +10,7 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { Geolocation } from '@ionic-native/geolocation/ngx';
 import { IonicStorageModule } from '@ionic/storage';
 import { Storage } from '@ionic/storage';
+import { Network } from '@ionic-native/network/ngx'
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -28,6 +29,7 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
   ],
   providers: [
     Geolocation,
+    Network,
     StatusBar,
     SplashScreen,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
