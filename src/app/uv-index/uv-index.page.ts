@@ -6,6 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { WeatherService } from '../services/weather/weather.service';
 import { UVIndex } from '../models/uv-index';
 import { UserPreferencesComponent } from '../user-preferences/user-preferences.component';
+import { UserPreferencesService } from '../services/user-preferences/user-preferences.service';
 
 @Component({
   selector: 'app-uv-index',
@@ -14,6 +15,10 @@ import { UserPreferencesComponent } from '../user-preferences/user-preferences.c
 })
 export class UVIndexPage {
   uvIndex: UVIndex;
+
+  cityName: string;
+
+  scale: string;
 
   advice: Array<string> = [
     'Wear sunglasses on bright days. If you burn easily, cover up and use broad spectrum SPF 30+ sunscreen. ' +
@@ -35,6 +40,7 @@ export class UVIndexPage {
   constructor(
     private modal: ModalController,
     public loading: LoadingController,
+    private userPreferences: UserPreferencesService,
     private weather: WeatherService
   ) {}
 
@@ -51,6 +57,8 @@ export class UVIndexPage {
       cssClass: 'custom-class custom-loading'
     });
     l.present();
+    this.cityName = (await this.userPreferences.getCity()).name;
+    this.scale = (await this.userPreferences.getUseCelsius()) ? 'C' : 'F';
     this.weather.uvIndex().subscribe(i => {
       this.uvIndex = i;
       l.dismiss();
