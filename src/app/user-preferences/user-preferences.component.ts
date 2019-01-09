@@ -3,7 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { ModalController } from '@ionic/angular';
 
 import { City } from '../models/city';
-import { cities } from './cities';
+import { cities } from '../services/user-preferences/cities';
+import { UserPreferencesService } from '../services/user-preferences/user-preferences.service';
 
 @Component({
   selector: 'app-user-preferences',
