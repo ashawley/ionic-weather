@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
-import { cities } from '../../user-preferences/cities';
 import { City } from '../../models/city';
+import { cities } from './cities';
 
 @Injectable({
   providedIn: 'root'
@@ -32,10 +32,16 @@ export class UserPreferencesService {
     this.storage.set(this.keys.useCelsius, value);
   }
 
+  availableCities(): Array<City> {
+    return cities;
+  }
+
   async getCity(): Promise<City> {
     await this.storage.ready();
     if (this._city === undefined) {
-      this._city = await this.storage.get(this.keys.city);
+      const city = await this.storage.get(this.keys.city);
+      this._city =
+        cities.find(c => c.name === (city && city.name)) || cities[0];
     }
     return this._city;
   }
