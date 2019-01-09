@@ -12,6 +12,7 @@ import { Forecast } from '../../models/forecast';
 import { Weather } from '../../models/weather';
 import { UVIndex } from '../../models/uv-index';
 import { Coordinate } from '../../models/coordinate';
+import { UserPreferencesService } from '../user-preferences/user-preferences.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,14 +20,23 @@ import { Coordinate } from '../../models/coordinate';
 export class WeatherService {
   constructor(
     private http: HttpClient,
-    private location: LocationService
+    private location: LocationService,
+    private userPreferences: UserPreferencesService
   ) {}
 
   private appId = 'a895e31039049c15d405c5c541128194'; // or use your own API key
   private baseUrl = 'https://api.openweathermap.org/data/2.5';
 
   private getCurrentLocation(): Observable<Coordinate> {
-    return from(this.location.current());
+    return from(
+      this.userPreferences.getCity().then(city => {
+        if (city && city.coordinate) {
+          return Promise.resolve(city.coordinate);
+        } else {
+          return this.location.current();
+        }
+      })
+    );
   }
 
   current(): Observable<Weather> {
