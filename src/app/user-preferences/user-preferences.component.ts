@@ -13,7 +13,10 @@ import { UserPreferencesService } from '../services/user-preferences/user-prefer
 })
 export class UserPreferencesComponent implements OnInit {
 
-  constructor(private modal: ModalController) {}
+  constructor(
+    private userPreferences: UserPreferencesService,
+    private modal: ModalController
+  ) {}
 
   cities: Array<City> = cities;
   city: City = cities[0];
@@ -28,6 +31,8 @@ export class UserPreferencesComponent implements OnInit {
 
   save() {
     console.log(`save("${this.city.name}", ${this.useCelsius})`);
+    this.userPreferences.setCity(this.city);
+    this.userPreferences.setUseCelsius(this.useCelsius);
     this.modal.dismiss();
   }
 
