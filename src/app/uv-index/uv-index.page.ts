@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 
+import { Subscription } from 'rxjs';
+
 import { WeatherService } from '../services/weather/weather.service';
 import { UVIndex } from '../models/uv-index';
 import { UserPreferencesComponent } from '../user-preferences/user-preferences.component';
@@ -19,6 +21,8 @@ export class UVIndexPage {
   cityName: string;
 
   scale: string;
+
+  private subscription: Subscription;
 
   advice: Array<string> = [
     'Wear sunglasses on bright days. If you burn easily, cover up and use broad spectrum SPF 30+ sunscreen. ' +
@@ -44,12 +48,26 @@ export class UVIndexPage {
     private weather: WeatherService
   ) {}
 
+  ngOnInit() {
+    this.subscription = this.userPreferences.changed.subscribe(() =>
+      this.getData()
+    );
+  }
+
+  ionViewDidEnter() {
+    this.getData();
+  }
+
   async openUserPreferences(): Promise<void> {
     const m = await this.modal.create({ component: UserPreferencesComponent });
     await m.present();
   }
 
-  async ionViewDidEnter() {
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  private async getData() {
     const l = await this.loading.create({
       duration: 2000,
       message: 'Please wait...',

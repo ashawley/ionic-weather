@@ -22,17 +22,21 @@ export class UserPreferencesComponent implements OnInit {
   city: City = cities[0];
   useCelsius: boolean;
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.city = await this.userPreferences.getCity();
+    this.useCelsius = await this.userPreferences.getUseCelsius();
   }
 
   dismiss() {
     this.modal.dismiss();
   }
 
-  save() {
+  async save() {
+    await Promise.all([
+      this.userPreferences.setCity(this.city),
+      this.userPreferences.setUseCelsius(this.useCelsius)
+    ]);
     console.log(`save("${this.city.name}", ${this.useCelsius})`);
-    this.userPreferences.setCity(this.city);
-    this.userPreferences.setUseCelsius(this.useCelsius);
     this.modal.dismiss();
   }
 

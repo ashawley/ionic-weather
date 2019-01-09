@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Storage } from '@ionic/storage';
 
+import { Subject } from 'rxjs';
+
 import { City } from '../../models/city';
 import { cities } from './cities';
 
@@ -16,7 +18,11 @@ export class UserPreferencesService {
 
   private _city: City;
 
-  constructor(private storage: Storage) {}
+  changed: Subject<void>;
+
+  constructor(private storage: Storage) {
+    this.changed = new Subject();
+  }
 
   async getUseCelsius(): Promise<boolean> {
     await this.storage.ready();
@@ -29,7 +35,8 @@ export class UserPreferencesService {
   async setUseCelsius(value: boolean): Promise<void> {
     await this.storage.ready();
     this._useCelsius = value;
-    this.storage.set(this.keys.useCelsius, value);
+    await this.storage.set(this.keys.useCelsius, value);
+    this.changed.next();
   }
 
   availableCities(): Array<City> {

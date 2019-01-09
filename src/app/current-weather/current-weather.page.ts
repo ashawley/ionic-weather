@@ -3,6 +3,8 @@ import { Component } from '@angular/core';
 import { LoadingController } from '@ionic/angular';
 import { ModalController } from '@ionic/angular';
 
+import { Subscription } from 'rxjs';
+
 import { WeatherService } from '../services/weather/weather.service';
 import { IconMapService } from '../services/icon-map/icon-map.service';
 import { Weather } from '../models/weather';
@@ -21,6 +23,8 @@ export class CurrentWeatherPage {
 
   scale: string;
 
+  private subscription: Subscription;
+
   constructor(
     private modal: ModalController,
     public loading: LoadingController,
@@ -29,12 +33,26 @@ export class CurrentWeatherPage {
     private weather: WeatherService
   ) {}
 
+  ngOnInit() {
+    this.subscription = this.userPreferences.changed.subscribe(() =>
+      this.getData()
+    );
+  }
+
+  ionViewDidEnter() {
+    this.getData();
+  }
+
   async openUserPreferences(): Promise<void> {
     const m = await this.modal.create({ component: UserPreferencesComponent });
     await m.present();
   }
 
-  async ionViewDidEnter() {
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
+  private async getData() {
     const l = await this.loading.create({
       duration: 2000,
       message: 'Please wait...',
