@@ -8,6 +8,7 @@
     "start": "ng serve",
     "build": "ng build",
     "build:ios": "ionic cordova build ios -- -buildFlag='-UseModernBuildSystem=0'",
+    "build:web": "ionic build --engine=browser --prod",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"
