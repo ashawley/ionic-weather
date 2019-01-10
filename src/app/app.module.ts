@@ -15,6 +15,8 @@ import { Network } from '@ionic-native/network/ngx'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { UserPreferencesComponent } from './user-preferences/user-preferences.component';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [AppComponent, UserPreferencesComponent],
@@ -25,7 +27,8 @@ import { UserPreferencesComponent } from './user-preferences/user-preferences.co
     HttpClientModule,
     IonicModule.forRoot(),
     IonicStorageModule.forRoot(),
-    AppRoutingModule
+    AppRoutingModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     Geolocation,
