@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 
 import { Subscription } from 'rxjs';
 
+import { NetworkService } from '../services/network/network.service';
 import { WeatherService } from '../services/weather/weather.service';
 import { UVIndex } from '../models/uv-index';
 import { UserPreferencesComponent } from '../user-preferences/user-preferences.component';
@@ -44,6 +45,7 @@ export class UVIndexPage {
   constructor(
     private modal: ModalController,
     public loading: LoadingController,
+    public network: NetworkService,
     private userPreferences: UserPreferencesService,
     private weather: WeatherService
   ) {}
@@ -68,18 +70,20 @@ export class UVIndexPage {
   }
 
   private async getData() {
-    const l = await this.loading.create({
-      duration: 2000,
-      message: 'Please wait...',
-      translucent: true,
-      cssClass: 'custom-class custom-loading'
-    });
-    l.present();
-    this.cityName = (await this.userPreferences.getCity()).name;
-    this.scale = (await this.userPreferences.getUseCelsius()) ? 'C' : 'F';
-    this.weather.uvIndex().subscribe(i => {
-      this.uvIndex = i;
-      l.dismiss();
-    });
+    if (this.network.onLine) {
+      const l = await this.loading.create({
+        duration: 2000,
+        message: 'Please wait...',
+        translucent: true,
+        cssClass: 'custom-class custom-loading'
+      });
+      l.present();
+      this.cityName = (await this.userPreferences.getCity()).name;
+      this.scale = (await this.userPreferences.getUseCelsius()) ? 'C' : 'F';
+      this.weather.uvIndex().subscribe(i => {
+        this.uvIndex = i;
+        l.dismiss();
+      });
+    }
   }
 }

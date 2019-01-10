@@ -12,7 +12,10 @@
 </ion-header>
 
 <ion-content padding>
-<div class="city">{{cityName}}</div>
+  <div *ngIf="!network.onLine">
+    Warning: network is offline, data may be stale
+  </div>  
+  <div class="city">{{cityName}}</div>
   <ion-list>
     <ion-item *ngFor="let f of forecast">
       <kws-daily-forecast

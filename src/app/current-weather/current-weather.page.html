@@ -12,6 +12,9 @@
 </ion-header>
 
 <ion-content padding text-center>
+  <div *ngIf="!network.onLine">
+    Warning: network is offline, data may be stale
+  </div>
   <div class="information">
     <div class="city">{{cityName}}</div>
     <kws-temperature

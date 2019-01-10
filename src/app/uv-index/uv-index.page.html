@@ -12,6 +12,9 @@
 </ion-header>
 
 <ion-content text-center padding>
+  <div *ngIf="!network.onLine">
+    Warning: network is offline, data may be stale
+  </div>  
   <div class="city">{{cityName}}</div>
   <kws-uv-index class="primary-value"
     [uvIndex]="uvIndex?.value"

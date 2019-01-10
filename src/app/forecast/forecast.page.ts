@@ -6,6 +6,7 @@ import { ModalController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
 
 import { Forecast } from '../models/forecast';
+import { NetworkService } from '../services/network/network.service';
 import { WeatherService } from '../services/weather/weather.service';
 import { IconMapService } from '../services/icon-map/icon-map.service';
 import { UserPreferencesComponent } from '../user-preferences/user-preferences.component';
@@ -29,6 +30,7 @@ export class ForecastPage {
     private modal: ModalController,
     public loading: LoadingController,
     public iconMap: IconMapService,
+    public network: NetworkService,
     private userPreferences: UserPreferencesService,
     private weather: WeatherService
   ) {}
@@ -53,17 +55,19 @@ export class ForecastPage {
   }
 
   private async getData() {
-    const l = await this.loading.create({
-      duration: 2000,
-      message: 'Please wait...',
-      translucent: true
-    });
-    l.present();
-    this.cityName = (await this.userPreferences.getCity()).name;
-    this.scale = (await this.userPreferences.getUseCelsius()) ? 'C' : 'F';
-    this.weather.forecast().subscribe(f => {
-      this.forecast = f;
-      l.dismiss();
-    });
+    if (this.network.onLine) {
+      const l = await this.loading.create({
+        duration: 2000,
+        message: 'Please wait...',
+        translucent: true
+      });
+      l.present();
+      this.cityName = (await this.userPreferences.getCity()).name;
+      this.scale = (await this.userPreferences.getUseCelsius()) ? 'C' : 'F';
+      this.weather.forecast().subscribe(f => {
+        this.forecast = f;
+        l.dismiss();
+      });
+    }
   }
 }
